@@ -1,0 +1,66 @@
+name: job-pocket
+
+services:
+  backend:
+    image: nobrain711/job-pocket:backend-v0.1.1
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    env_file:
+      - .env
+    environment:
+      TZ: ${TIMEZONE}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      RUNPOD_API_KEY: ${RUNPOD_API_KEY}
+      GROQ_API_KEY: ${GROQ_API_KEY}
+      USER_AGENT: ${USER_AGENT}
+      LANGSMITH_TRACING: ${LANGSMITH_TRACING}
+      LANGSMITH_ENDPOINT: ${LANGSMITH_ENDPOINT}
+      LANGSMITH_API_KEY: ${LANGSMITH_API_KEY}
+      LANGSMITH_PROJECT: ${LANGSMITH_PROJECT}
+      RDB_URL: ${RDB_URL}
+      MYSQL_RDB_USER: ${MYSQL_RDB_USER}
+      MYSQL_RDB_PASSWORD: ${MYSQL_RDB_PASSWORD}
+      VECTOR_DB_URL: ${VECTOR_DB_URL}
+      MYSQL_VECTOR_USER: ${MYSQL_VECTOR_USER}
+      MYSQL_VECTOR_PASSWORD: ${MYSQL_VECTOR_PASSWORD}
+    depends_on:
+      database:
+        condition: service_healthy
+
+  frontend:
+    image: nobrain711/job-pocket:frontend-v0.1.1
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./frontend:/app
+    env_file:
+      - .env
+    environment:
+      TZ: ${TIMEZONE}
+      API_BASE_URL: ${API_BASE_URL}
+    depends_on:
+      - backend
+
+  database:
+    image: nobrain711/job-pocket:database-v0.1.1
+    ports:
+      - "3306:3306"
+    env_file:
+      - .env
+    environment:
+      TZ: ${TIMEZONE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-proot" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+volumes:
+  mysql_data:
