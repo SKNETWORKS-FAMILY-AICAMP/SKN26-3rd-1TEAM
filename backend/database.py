@@ -83,7 +83,7 @@ def save_chat_message(email, role, content):
     conn = get_connection()
     try:
         with conn.cursor() as c:
-            sql = 'INSERT INTO chat_history (email, role, content) VALUES (%s, %s, %s)'
+            sql = 'INSERT INTO chat_history (user_email, role, content) VALUES (%s, %s, %s)'
             c.execute(sql, (email, role, content))
             conn.commit()
     finally:
