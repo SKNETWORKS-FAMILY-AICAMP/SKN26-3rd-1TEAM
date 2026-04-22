@@ -26,19 +26,20 @@ if str(ROOT_DIR) not in sys.path:
     sys.path.append(str(ROOT_DIR))
 
 from retriever import HybridRetriever
+from common.config import VECTOR_DB_CONFIG, OLLAMA_CONFIG, OPENAI_API_CONFIG, GROQ_API_CONFIG, EMBEDDING_CONFIG
 
 # -----------------------------
 # DB 연결 설정
 # -----------------------------
 
-DB_CONFIG = {
-    'host': os.getenv('VECTOR_DB_URL'),
-    'port': 3306,
-    'user': os.getenv('MYSQL_VECTOR_USER'),
-    'password': os.getenv('MYSQL_VECTOR_PASSWORD'),
-    'db': 'job_pocket_vector',
-    'charset': 'utf8mb4'    
-}
+# DB_CONFIG = {
+#     'host': os.getenv('VECTOR_DB_URL'),
+#     'port': 3306,
+#     'user': os.getenv('MYSQL_VECTOR_USER'),
+#     'password': os.getenv('MYSQL_VECTOR_PASSWORD'),
+#     'db': 'job_pocket_vector',
+#     'charset': 'utf8mb4'    
+# }
 
 # -----------------------------
 # 모델 설정
@@ -46,31 +47,35 @@ DB_CONFIG = {
 
 # Ollama = runpod 적용 시 제거 예정
 local_llm = ChatOllama(
-    model="exaone3.5:7.8b",
-    base_url="http://localhost:11434",
-    temperature=0.9,
+    # model="exaone3.5:7.8b",
+    # base_url="http://localhost:11434",
+    # temperature=0.9,
+    **OLLAMA_CONFIG
 )
 
 llm_gpt = ChatOpenAI(
-    model="gpt-4o-mini",
-    temperature=0.55,
+    # model="gpt-4o-mini",
+    # temperature=0.55,
+    **OPENAI_API_CONFIG
 )
 
 llm_groq = ChatGroq(
-    model="openai/gpt-oss-120b",
-    temperature=0.65,
-    top_p=1,
-    stop=None,
+    # model="openai/gpt-oss-120b",
+    # temperature=0.65,
+    # top_p=1,
+    # stop=None,
+    **GROQ_API_CONFIG
 )
 
 hf_embeddings = HuggingFaceEmbeddings(
-    model_name="Qwen/Qwen3-Embedding-0.6B",
-    model_kwargs={'device': 'cpu'}, # GPU 없으면 'cpu'
-    encode_kwargs={'normalize_embeddings': True}
+    # model_name="Qwen/Qwen3-Embedding-0.6B",
+    # model_kwargs={'device': 'cpu'}, # GPU 없으면 'cpu'
+    # encode_kwargs={'normalize_embeddings': True}
+    **EMBEDDING_CONFIG
 )
 
 selfintro_retriever = HybridRetriever(
-    db_config=DB_CONFIG,
+    db_config=VECTOR_DB_CONFIG,
     embeddings=hf_embeddings,
     top_n=3,       
     initial_k=5,

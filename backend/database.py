@@ -2,18 +2,20 @@ import pymysql
 import json
 import os
 
-DB_CONFIG = {
-    'host': os.getenv('RDB_URL'),
-    'port': 3306,
-    'user': os.getenv('MYSQL_RDB_USER'),
-    'password': os.getenv('MYSQL_RDB_PASSWORD'),
-    'db': 'job_pocket_rdb',
-    'charset': 'utf8mb4'    
-}
+from common.config import RDB_CONFIG
+
+# DB_CONFIG = {
+#     'host': os.getenv('RDB_URL'),
+#     'port': 3306,
+#     'user': os.getenv('MYSQL_RDB_USER'),
+#     'password': os.getenv('MYSQL_RDB_PASSWORD'),
+#     'db': 'job_pocket_rdb',
+#     'charset': 'utf8mb4'    
+# }
 
 # DB 연결을 생성하는 헬퍼 함수
 def get_connection():
-    config = DB_CONFIG
+    config = RDB_CONFIG
     return pymysql.connect(
         **config,
         cursorclass=pymysql.cursors.DictCursor # 결과를 딕셔너리 형태로 받기 위해 추가
