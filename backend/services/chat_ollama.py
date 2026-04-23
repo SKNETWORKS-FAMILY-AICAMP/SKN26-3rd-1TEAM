@@ -1,31 +1,40 @@
-import os
 import asyncio
+import traceback
+from pprint import pformat
 from langchain_core.messages import BaseMessage
 
-from .exaone_infer import exaone_infer
+from exaone import exaone_infer
+
 
 def call_runpod_ollama(messages: list[BaseMessage]) -> str:
     """
-    Runpod Serverless를 호출하여 Ollama(EXAONE) 추론 결과를 가져옵니다.
+    RunPod Serverless를 호출하여 EXAONE 추론 결과를 가져옵니다.
     """
     try:
-        result = asyncio.run(exaone_infer(messages))
-        
-        if result.get("ok"):
-            return result["text"]
-        else:
-            raise Exception("생성이 제대로 되지 않았습니다.")
+        payload = {
+            "input": {
+                "messages": messages,
+                "temperature": 0.7,
+            }
+        }
+
+        result = asyncio.run(exaone_infer(payload))
+
+        print("DEBUG result:")
+        print(pformat(result, width=120))
+
+        if not isinstance(result, dict):
+            raise TypeError(
+                f"unexpected response type: {type(result).__name__}, value={result!r}"
+            )
+
+        if result.get("ok") is True:
+            return result.get("text", "")
+
+        error_msg = result.get("error", "생성이 제대로 되지 않았습니다.")
+        raise RuntimeError(error_msg)
+
     except Exception as e:
-        return f"Error: Failed to call Runpod Serverless - {str(e)}"
-    
-if __name__ == "__main__":
-    from langchain_core.prompts import ChatPromptTemplate
-    prompt = ChatPromptTemplate.from_messages(
-        [("system", "당신은 아주 친절한 챗봇입니다. 질문에 잘 답변해주세요"),
-        ("human", "{topic}에 대해 자세하게 설명해 주세요.")]
-    )
-    final_prompt = prompt.invoke({"topic":"LangGraph"})
-    input_messages = [{"role": "user" if m.type == "human" else m.type, "content": m.content} for m in final_prompt.to_messages()]
-    
-    
-    
+        print("DEBUG traceback:")
+        traceback.print_exc()
+        return f"Error: Failed to call Runpod Serverless - {type(e).__name__}: {e}"
