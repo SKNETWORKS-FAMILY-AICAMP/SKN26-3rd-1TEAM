@@ -1,6 +1,6 @@
 from common.db import MYSQL_RDB_USER, MYSQL_VECTOR_USER, rdb_engine, vector_engine
 
-from schemas.health import (
+from schemas import (
     HealthResponse,
     DatabaseHealthItem,
     DatabaseHealthResponse,

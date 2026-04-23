@@ -1,16 +1,16 @@
 from fastapi import FastAPI
 
 # router
-from routers.health import router as health_check
+from routers import health_router
 
 # app
 app = FastAPI()
 
 # route add
-app.include_router(health_check)
+app.include_router(health_router)
 
-    """
-    from fastapi import FastAPI
+"""
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import database as db
 
@@ -41,4 +41,4 @@ app.include_router(chat.router, prefix="/api/chat", tags=["AI Chat Logic"])
 @app.get("/")
 def root():
     return {"message": "JobPocket Backend is Running!"}
-    """
+"""
