@@ -22,6 +22,7 @@ app.add_middleware(
 )
 
 # 라우터 연결
+app.include_router(health_router)
 app.include_router(auth.router, prefix="/api/auth", tags=["Authentication"])
 app.include_router(resume.router, prefix="/api/resume", tags=["Resume"])
 app.include_router(chat.router, prefix="/api/chat", tags=["AI Chat Logic"])
