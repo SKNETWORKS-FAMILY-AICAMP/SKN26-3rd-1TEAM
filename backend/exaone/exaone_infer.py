@@ -12,7 +12,7 @@ from common.runpod import (
     datacenter=RUNPOD_SUB_DATACENTER,
     volume=get_runpod_sub_volume(),
     execution_timeout_ms=0,
-    workers=(1, 1),
+    workers=(0, 1),
     idle_timeout=300,
     dependencies=["torch", "transformers>=4.43"],
 )
@@ -52,8 +52,7 @@ async def exaone_infer(data: dict):
                 torch_dtype=torch.float16,
                 trust_remote_code=True,
                 local_files_only=True,
-                device_map="auto",
-            )
+            ).to("cuda")
             model.eval()
             global_state["_model"] = model
 

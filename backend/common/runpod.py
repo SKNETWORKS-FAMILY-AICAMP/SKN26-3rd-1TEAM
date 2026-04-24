@@ -16,6 +16,7 @@ def get_runpod_volume() -> NetworkVolume:
         datacenter=RUNPOD_DATACENTER,
     )
 
+
 def get_runpod_sub_volume() -> NetworkVolume:
     return NetworkVolume(
         id=RUNPOD_SUB_VOLUME_ID,
