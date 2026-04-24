@@ -125,7 +125,7 @@ def update_password(email: str, new_password_hash: str) -> bool:
 
 def update_resume_data(
     email: str,
-    resume_data: Dict[str, Any],
+    resume_data: ResumeData,
 ) -> bool:
     """
     사용자의 이력서 데이터를 JSON 문자열로 저장합니다.
