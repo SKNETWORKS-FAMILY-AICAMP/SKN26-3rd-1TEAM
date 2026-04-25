@@ -2,7 +2,7 @@ name: job-pocket
 
 services:
   backend:
-    image: nobrain711/job-pocket:backend-v0.3.0
+    image: nobrain711/job-pocket:backend-v0.4.1
     ports:
       - "8000:8000"
     volumes:
@@ -30,7 +30,7 @@ services:
         condition: service_healthy
 
   frontend:
-    image: nobrain711/job-pocket:frontend-v0.2.0
+    image: nobrain711/job-pocket:frontend-v0.4.0
     ports:
       - "8501:8501"
     volumes:
@@ -44,7 +44,7 @@ services:
       - backend
 
   database:
-    image: nobrain711/job-pocket:database-v0.1.1
+    image: nobrain711/job-pocket:database-v0.4.0
     ports:
       - "3306:3306"
     env_file:
