@@ -8,6 +8,8 @@ MYSQL_RDB_USER = os.getenv('MYSQL_RDB_USER')
 
 MYSQL_VECTOR_USER = os.getenv('MYSQL_VECTOR_USER')
 
+INDEX_URL = os.getenv("INDEX_URL")
+
 OPENAI_API_CONFIG = {
     "model": "gpt-4o-mini",
     "temperature": 0.55,
