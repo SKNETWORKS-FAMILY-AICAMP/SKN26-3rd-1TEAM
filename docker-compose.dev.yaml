@@ -1,6 +1,6 @@
 services:
   backend:
-    image: nobrain711/job-pocket:backend-v0.4.1
+    image: nobrain711/job-pocket:backend-v0.4.2
     ports:
       - "8000:8000"
     volumes:

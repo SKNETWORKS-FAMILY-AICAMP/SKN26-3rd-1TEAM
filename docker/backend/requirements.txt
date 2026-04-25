@@ -11,6 +11,11 @@ pydantic[email]==2.13.0
 pymysql==1.1.2
 
 # ==========================
+# Numeric / ML Base
+# ==========================
+numpy<2
+
+# ==========================
 # Vector Search (CPU)
 # ==========================
 faiss-cpu~=1.12.0
@@ -19,10 +24,19 @@ faiss-cpu~=1.12.0
 # Torch CPU only
 # ==========================
 --extra-index-url https://download.pytorch.org/whl/cpu
-torch~=2.2.0
+torch~=2.11.0
 
 # ==========================
-# LangChain Ecosystem (~= 적용)
+# HuggingFace / Embeddings
+# ==========================
+transformers~=5.6.2
+sentence-transformers~=5.4.1
+huggingface_hub~=1.12.0
+safetensors~=0.7.0
+tokenizers~=0.22.2
+
+# ==========================
+# LangChain Ecosystem
 # ==========================
 langchain~=1.2.15
 langchain-classic~=1.0.4
@@ -46,11 +60,6 @@ openai~=2.31.0
 groq~=0.37.1
 
 # ==========================
-# Embeddings
-# ==========================
-sentence-transformers~=5.4.1
-
-# ==========================
 # NLP / Retrieval
 # ==========================
 kiwipiepy~=0.23.1
@@ -66,4 +75,3 @@ gdown~=6.0.0
 # ==========================
 pytest~=8.0.0
 httpx~=0.28.0
-
