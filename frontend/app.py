@@ -9,7 +9,9 @@ from views import auth_view, resume_view, chat_view
 # ==========================================
 # 1. 페이지 기본 설정 및 세션 초기화
 # ==========================================
-st.set_page_config(page_title="JobPocket", page_icon="public/logo_light.png", layout="wide")
+st.set_page_config(
+    page_title="JobPocket", page_icon="public/logo_light.png", layout="wide"
+)
 apply_custom_css()
 
 DEFAULT_SESSION_VALUES = {
@@ -48,8 +50,8 @@ if not st.session_state.logged_in:
 # 3. 사이드바 및 메인 라우팅 (로그인 후)
 # ==========================================
 else:
-    user_email = st.session_state.user_info[2]
-    user_name = st.session_state.user_info[0]
+    user_email = st.session_state.user_info["email"]
+    user_name = st.session_state.user_info["username"]
 
     if st.session_state.history_loaded_for != user_email:
         st.session_state.messages = api_client.load_chat_history_api(user_email)
@@ -76,7 +78,7 @@ else:
         if st.button("💬 새 채팅 (AI 자소서 첨삭)", use_container_width=True):
             st.session_state.menu = "chat"
             st.rerun()
-            
+
         st.write("")
         st.caption("🧠 AI 모델 설정")
         # ✨ 새 채팅 아래에 원래대로 AI 모델 선택기 배치
@@ -100,10 +102,16 @@ else:
                 st.rerun()
 
         if st.session_state.messages:
-            user_questions = [m for m in st.session_state.messages if m["role"] == "user"]
+            user_questions = [
+                m for m in st.session_state.messages if m["role"] == "user"
+            ]
             with st.container(height=300):
                 for q in reversed(user_questions):
-                    short_q = q["content"][:15] + "..." if len(q["content"]) > 15 else q["content"]
+                    short_q = (
+                        q["content"][:15] + "..."
+                        if len(q["content"]) > 15
+                        else q["content"]
+                    )
                     st.markdown(
                         f"<div style='padding:5px 0; font-size:0.9em; color:#555;'>💬 {short_q}</div>",
                         unsafe_allow_html=True,
